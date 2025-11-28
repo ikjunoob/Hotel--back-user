@@ -1,0 +1,133 @@
+@use "sass:color";
+@use "../../common/variables" as *;
+@use "../../common/mixins" as *;
+
+.search-page {
+    padding: 2rem 0;
+    min-height: 100vh;
+    background-color: #FAFAFA;
+
+    /* 헤더 높이만큼 여백 확보 (헤더가 absolute인 경우) */
+    padding-top: 10rem;
+
+    /* 1. 검색창 영역 */
+    .search-bar-wrapper {
+        /* ❌ 기존의 전체 흰색 배경 삭제 */
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+        margin-bottom: 4rem;
+
+        display: flex;
+        justify-content: center;
+
+        /* ✅ 검색창을 박스 형태로 만듦 */
+        .search-container {
+            width: 100%;
+            max-width: 1680px;
+
+            /* 박스 스타일 */
+            background: #fff;
+            border-radius: 2rem;
+            padding: 3rem 4rem;
+            box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.08);
+
+            display: flex;
+            gap: 2rem;
+            align-items: flex-end;
+
+            @include respond-md {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 2rem;
+            }
+
+            .input-group {
+                flex: 1;
+
+                label {
+                    display: block;
+                    font-size: 1.4rem;
+                    font-weight: 700;
+                    color: #112211;
+                    margin-bottom: 0.8rem;
+                }
+
+                .input-field {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 1.2rem;
+                    border: 1px solid #ccc;
+                    border-radius: 0.8rem;
+                    background: #fff;
+                    /* 박스 안의 입력창 배경 */
+
+                    svg {
+                        color: #112211;
+                    }
+
+                    input,
+                    select {
+                        width: 100%;
+                        border: none;
+                        outline: none;
+                        font-size: 1.4rem;
+                        color: #112211;
+                        background: transparent;
+                    }
+
+                    /* DatePicker 스타일 */
+                    .custom-datepicker {
+                        width: 100%;
+                        border: none;
+                        outline: none;
+                        cursor: pointer;
+                        background: transparent;
+                    }
+
+                    .react-datepicker-wrapper {
+                        width: 100%;
+                    }
+                }
+            }
+
+            /* 검색 버튼 */
+            .btn-search {
+                width: 5rem;
+                height: 5rem;
+                background-color: #8DD3BB;
+                border: none;
+                border-radius: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: background 0.2s;
+                flex-shrink: 0;
+
+                svg {
+                    font-size: 2rem;
+                    color: #112211;
+                }
+
+                &:hover {
+                    background-color: color.adjust(#8DD3BB, $lightness: -10%);
+                }
+            }
+        }
+    }
+
+    /* 2. 검색 결과 리스트 (기존 유지) */
+    .container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 2rem;
+
+        .results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+    }
+}

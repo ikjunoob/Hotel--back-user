@@ -1,0 +1,99 @@
+@use "../../common/variables" as *;
+
+.wishlist-page {
+    padding-top: 10rem;
+    min-height: 100vh;
+    /* 배경색 살짝 회색 */
+
+    .container {
+        max-width: 1900px;
+        margin: 0 auto;
+        padding: 4rem;
+    }
+
+    .page-title {
+        font-size: 3.2rem;
+        font-weight: 800;
+        color: #112211;
+        margin-bottom: 3rem;
+    }
+
+    /* ✅ 탭 메뉴 스타일 */
+    .wishlist-tabs {
+        display: flex;
+        background: #fff;
+        border-radius: 1.2rem;
+        padding: 0 2rem;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.297);
+        margin-bottom: 3rem;
+
+        .tab-item {
+            flex: 1;
+            padding: 2.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border-bottom: 4px solid transparent;
+            transition: all 0.2s;
+
+            /* 탭 내부 텍스트 */
+            .tab-title {
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: #112211;
+            }
+
+            .tab-count {
+                font-size: 1.4rem;
+                color: #112211;
+                opacity: 0.7;
+            }
+
+            /* 활성화된 탭 스타일 */
+            &.active {
+                border-bottom-color: #8DD3BB;
+                /* 민트색 밑줄 */
+
+                /* 글씨 색상 강조 (선택사항) */
+                .tab-title {
+                    color: #112211;
+                }
+            }
+
+            /* 비활성 탭 흐리게 */
+            &:not(.active) {
+                border-right: 1px solid #EAEAEA;
+
+                /* 탭 사이 구분선 */
+                .tab-title,
+                .tab-count {
+                    opacity: 0.5;
+                }
+            }
+
+            /* 마지막 탭은 오른쪽 선 제거 */
+            &:last-child {
+                border-right: none;
+            }
+
+            /* 호버 효과 */
+            &:hover:not(.active) {
+                background-color: #fafafa;
+            }
+        }
+    }
+
+    .wishlist-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+
+        .empty-state {
+            text-align: center;
+            padding: 5rem;
+            font-size: 1.6rem;
+            color: #999;
+        }
+    }
+}
