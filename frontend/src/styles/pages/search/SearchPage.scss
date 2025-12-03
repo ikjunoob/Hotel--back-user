@@ -150,7 +150,7 @@
                                 transition: 0.2s;
 
                                 &:hover {
-                                    background-color: color.adjust(#8DD3BB, $lightness: -10%);
+                                    background-color: color.adjust(#8DD3BB, $lightness:10%);
                                 }
 
                                 &:disabled {
