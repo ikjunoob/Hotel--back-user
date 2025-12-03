@@ -1,9 +1,10 @@
+/* src/styles/pages/search/SearchPage.scss */
 @use "sass:color";
 @use "../../common/variables" as *;
 @use "../../common/mixins" as *;
 
 .search-page {
-    padding: 2rem 0;
+    padding: 2rem 0 8rem;
     min-height: 100vh;
     background-color: #FAFAFA;
 
@@ -12,7 +13,6 @@
 
     /* 1. 검색창 영역 */
     .search-bar-wrapper {
-        /* ❌ 기존의 전체 흰색 배경 삭제 */
         background: transparent;
         box-shadow: none;
         padding: 0;
@@ -21,17 +21,14 @@
         display: flex;
         justify-content: center;
 
-        /* ✅ 검색창을 박스 형태로 만듦 */
+        /* 검색창 박스 스타일 */
         .search-container {
             width: 100%;
             max-width: 1680px;
-
-            /* 박스 스타일 */
             background: #fff;
             border-radius: 2rem;
             padding: 3rem 4rem;
             box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.08);
-
             display: flex;
             gap: 2rem;
             align-items: flex-end;
@@ -44,6 +41,7 @@
 
             .input-group {
                 flex: 1;
+                position: relative;
 
                 label {
                     display: block;
@@ -61,7 +59,10 @@
                     border: 1px solid #ccc;
                     border-radius: 0.8rem;
                     background: #fff;
-                    /* 박스 안의 입력창 배경 */
+
+                    &.pointer {
+                        cursor: pointer;
+                    }
 
                     svg {
                         color: #112211;
@@ -77,6 +78,13 @@
                         background: transparent;
                     }
 
+                    .guest-text {
+                        width: 100%;
+                        font-size: 1.4rem;
+                        color: #112211;
+                        font-weight: 500;
+                    }
+
                     /* DatePicker 스타일 */
                     .custom-datepicker {
                         width: 100%;
@@ -88,6 +96,85 @@
 
                     .react-datepicker-wrapper {
                         width: 100%;
+                    }
+                }
+
+                /* 인원 선택 팝업 스타일 */
+                .guest-popup {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    width: 100%;
+                    min-width: 25rem;
+                    background: #fff;
+                    border-radius: 1.6rem;
+                    padding: 2rem;
+                    margin-top: 1rem;
+                    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15);
+                    z-index: 20;
+                    border: 1px solid rgba(0, 0, 0, 0.05);
+
+                    .divider {
+                        height: 1px;
+                        background: #eee;
+                        margin: 1.5rem 0;
+                    }
+
+                    .counter-row {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        .label {
+                            font-size: 1.4rem;
+                            font-weight: 700;
+                            color: #112211;
+                        }
+
+                        .counter-controls {
+                            display: flex;
+                            align-items: center;
+                            gap: 1.5rem;
+
+                            button {
+                                width: 3.2rem;
+                                height: 3.2rem;
+                                border-radius: 0.8rem;
+                                border: none;
+                                background-color: #8DD3BB;
+                                color: #112211;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                                transition: 0.2s;
+
+                                &:hover {
+                                    background-color: darken(#8DD3BB, 10%);
+                                }
+
+                                &:disabled {
+                                    background-color: #f3f4f6;
+                                    color: #d1d5db;
+                                    cursor: not-allowed;
+                                    &:hover {
+                                        background-color: #f3f4f6;
+                                    }
+                                }
+
+                                svg {
+                                    font-size: 1.2rem;
+                                }
+                            }
+
+                            .count {
+                                font-size: 1.6rem;
+                                font-weight: 700;
+                                color: #112211;
+                                width: 1.5rem;
+                                text-align: center;
+                            }
+                        }
                     }
                 }
             }
@@ -118,16 +205,165 @@
         }
     }
 
-    /* 2. 검색 결과 리스트 (기존 유지) */
+    /* 2. 메인 컨테이너 및 그리드 레이아웃 */
     .container {
-        max-width: 1440px;
+        max-width: 1700px; /* 너비 확장 */
         margin: 0 auto;
         padding: 0 2rem;
 
-        .results-list {
+        /* 좌우 배치를 위한 그리드 설정 */
+        .search-layout-grid {
+            display: grid;
+            grid-template-columns: 32rem 1fr;
+            gap: 6rem; /* 좌우 간격 */
+            align-items: start;
+
+            // 반응형: 화면 줄어들면 한 줄로 표시
+            @include respond-md {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+    }
+}
+
+/* =========================================
+   ✅ 필터 사이드바 스타일
+   ========================================= */
+.filter-sidebar {
+    background: #fff;
+    border-radius: 1.2rem;
+    padding: 2.4rem;
+    box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.05);
+
+    .filter-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+    }
+
+    .divider {
+        height: 1px;
+        background: #EAEAEA;
+        margin: 2rem 0;
+    }
+
+    .filter-section {
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+
+            h4 {
+                font-size: 1.6rem;
+                font-weight: 600;
+            }
+
+            svg {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* 가격 슬라이더 */
+        .price-range-control {
+            .range-slider {
+                width: 100%;
+                -webkit-appearance: none;
+                height: 4px;
+                border-radius: 5px;
+                outline: none;
+
+                /* 슬라이더 동그라미 (민트색) */
+                &::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    width: 20px;
+                    height: 20px;
+                    background: #8DD3BB;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    border: 2px solid #fff;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                }
+            }
+
+            .range-labels {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 1rem;
+                font-size: 1.4rem;
+                font-weight: 600;
+            }
+        }
+
+        /* 체크박스 그룹 */
+        .checkbox-group {
             display: flex;
             flex-direction: column;
-            gap: 3rem;
+            gap: 1.2rem;
+
+            .checkbox-item {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                font-size: 1.4rem;
+                cursor: pointer;
+
+                input[type="checkbox"] {
+                    width: 1.8rem;
+                    height: 1.8rem;
+                    accent-color: #112211;
+                    cursor: pointer;
+                }
+
+                .stars {
+                    display: flex;
+                    gap: 0.2rem;
+
+                    .star-gold {
+                        color: #FFC107;
+                    }
+
+                    .star-gray {
+                        color: #ddd;
+                    }
+                }
+
+                .count {
+                    margin-left: auto;
+                    color: #999;
+                    font-size: 1.3rem;
+                }
+            }
+        }
+    }
+}
+
+/* 오른쪽 리스트 스타일 */
+.search-content {
+    .results-list {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    /* ✅ [추가] Show more results 버튼 스타일 */
+    .btn-show-more {
+        width: 100%;
+        padding: 1.5rem;
+        margin-top: 1rem; /* 리스트와의 간격 */
+        background-color: #112211; /* 검은색 배경 */
+        color: #fff; /* 흰색 글씨 */
+        border: none;
+        border-radius: 0.8rem;
+        font-size: 1.6rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: #000000; /* 호버 시 더 진한 검은색 */
         }
     }
 }

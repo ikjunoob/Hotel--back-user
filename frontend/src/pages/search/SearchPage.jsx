@@ -1,3 +1,4 @@
+/* src/pages/search/SearchPage.jsx */
 import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,11 +15,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../styles/pages/search/SearchPage.scss";
 import HotelCard from "../../components/hotel/HotelCard";
+/* ✅ 필터 사이드바 임포트 */
+import FilterSidebar from "./FilterSidebar";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
 
-  /* 초기값 가져오기 */
+  /* 초기값 설정 */
   const initialDest = searchParams.get("destination") || "";
   const initialCheckIn = searchParams.get("checkIn")
     ? new Date(searchParams.get("checkIn"))
@@ -26,20 +29,17 @@ const SearchPage = () => {
   const initialCheckOut = searchParams.get("checkOut")
     ? new Date(searchParams.get("checkOut"))
     : new Date();
-  /* ✅ [추가] URL에서 인원/객실 수 가져오기 (없으면 기본값 1, 2) */
   const initialRooms = Number(searchParams.get("rooms")) || 1;
   const initialGuests = Number(searchParams.get("guests")) || 2;
 
   const [destination, setDestination] = useState(initialDest);
   const [checkInDate, setCheckInDate] = useState(initialCheckIn);
   const [checkOutDate, setCheckOutDate] = useState(initialCheckOut);
-
-  /* ✅ [추가] 인원/객실 상태 및 팝업 상태 */
   const [rooms, setRooms] = useState(initialRooms);
   const [guests, setGuests] = useState(initialGuests);
   const [showGuestPopup, setShowGuestPopup] = useState(false);
 
-  /* ✅ [추가] 카운터 핸들러 */
+  /* 카운터 핸들러 */
   const handleCounter = (type, operation) => {
     if (type === "rooms") {
       if (operation === "inc") setRooms((prev) => prev + 1);
@@ -50,7 +50,7 @@ const SearchPage = () => {
     }
   };
 
-  // 더미 데이터
+  /* 더미 데이터 (결과 리스트) */
   const searchResults = [
     {
       id: 1,
@@ -60,6 +60,8 @@ const SearchPage = () => {
       reviews: 371,
       price: 240,
       image: "/images/hotel1.jpg",
+      amenities: "5 Star Hotel",
+      options: "20+ Amenities",
     },
     {
       id: 2,
@@ -69,6 +71,8 @@ const SearchPage = () => {
       reviews: 54,
       price: 104,
       image: "/images/hotel2.jpg",
+      amenities: "Boutique",
+      options: "15+ Amenities",
     },
     {
       id: 3,
@@ -78,11 +82,38 @@ const SearchPage = () => {
       reviews: 120,
       price: 180,
       image: "/images/hotel3.jpg",
+      amenities: "Luxury",
+      options: "25+ Amenities",
+    },
+    {
+      id: 4,
+      name: "Swissotel The Bosphorus",
+      location: "Istanbul",
+      rating: 4.9,
+      reviews: 450,
+      price: 320,
+      image: "/images/hotel1.jpg",
+      amenities: "5 Star Hotel",
+      options: "30+ Amenities",
     },
   ];
 
+  const btnStyle = {
+    width: "3.2rem",
+    height: "3.2rem",
+    borderRadius: "0.8rem",
+    border: "none",
+    backgroundColor: "#8DD3BB",
+    color: "#112211",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+  };
+
   return (
     <div className="search-page">
+      {/* 1. 상단 검색바 영역 */}
       <div className="search-bar-wrapper">
         <div className="search-container">
           {/* Destination */}
@@ -128,7 +159,7 @@ const SearchPage = () => {
             </div>
           </div>
 
-          {/* ✅ [수정] Rooms & Guests (팝업 적용) */}
+          {/* Rooms & Guests */}
           <div className="input-group" style={{ position: "relative" }}>
             <label>Rooms & Guests</label>
             <div
@@ -159,128 +190,36 @@ const SearchPage = () => {
               />
             </div>
 
-            {/* 팝업 내용 */}
+            {/* 인원수 팝업 */}
             {showGuestPopup && (
-              <div
-                className="guest-popup"
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  width: "100%",
-                  background: "#fff",
-                  borderRadius: "1.6rem",
-                  padding: "2rem",
-                  marginTop: "1rem",
-                  boxShadow: "0 1rem 3rem rgba(0,0,0,0.15)",
-                  zIndex: 20,
-                  border: "1px solid rgba(0,0,0,0.05)",
-                }}
-              >
-                {/* 방 개수 */}
-                <div
-                  className="counter-row"
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <span
-                    className="label"
-                    style={{ fontSize: "1.4rem", fontWeight: 700 }}
-                  >
-                    Rooms
-                  </span>
-                  <div
-                    className="counter-controls"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1.5rem",
-                    }}
-                  >
+              <div className="guest-popup">
+                <div className="counter-row">
+                  <span className="label">Rooms</span>
+                  <div className="counter-controls">
                     <button
                       onClick={() => handleCounter("rooms", "dec")}
                       disabled={rooms <= 1}
-                      style={btnStyle}
                     >
                       <FontAwesomeIcon icon={faMinus} />
                     </button>
-                    <span
-                      className="count"
-                      style={{
-                        fontSize: "1.6rem",
-                        fontWeight: 700,
-                        width: "1.5rem",
-                        textAlign: "center",
-                      }}
-                    >
-                      {rooms}
-                    </span>
-                    <button
-                      onClick={() => handleCounter("rooms", "inc")}
-                      style={btnStyle}
-                    >
+                    <span className="count">{rooms}</span>
+                    <button onClick={() => handleCounter("rooms", "inc")}>
                       <FontAwesomeIcon icon={faPlus} />
                     </button>
                   </div>
                 </div>
-
-                <div
-                  className="divider"
-                  style={{
-                    height: "1px",
-                    background: "#eee",
-                    margin: "1.5rem 0",
-                  }}
-                ></div>
-
-                {/* 인원 수 */}
-                <div
-                  className="counter-row"
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <span
-                    className="label"
-                    style={{ fontSize: "1.4rem", fontWeight: 700 }}
-                  >
-                    Guests
-                  </span>
-                  <div
-                    className="counter-controls"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1.5rem",
-                    }}
-                  >
+                <div className="divider"></div>
+                <div className="counter-row">
+                  <span className="label">Guests</span>
+                  <div className="counter-controls">
                     <button
                       onClick={() => handleCounter("guests", "dec")}
                       disabled={guests <= 1}
-                      style={btnStyle}
                     >
                       <FontAwesomeIcon icon={faMinus} />
                     </button>
-                    <span
-                      className="count"
-                      style={{
-                        fontSize: "1.6rem",
-                        fontWeight: 700,
-                        width: "1.5rem",
-                        textAlign: "center",
-                      }}
-                    >
-                      {guests}
-                    </span>
-                    <button
-                      onClick={() => handleCounter("guests", "inc")}
-                      style={btnStyle}
-                    >
+                    <span className="count">{guests}</span>
+                    <button onClick={() => handleCounter("guests", "inc")}>
                       <FontAwesomeIcon icon={faPlus} />
                     </button>
                   </div>
@@ -296,29 +235,55 @@ const SearchPage = () => {
         </div>
       </div>
 
+      {/* 2. 메인 컨텐츠 영역 (좌우 분할) */}
       <div className="container">
-        <div className="results-list">
-          {searchResults.map((hotel) => (
-            <HotelCard key={hotel.id} hotel={hotel} />
-          ))}
+        {/* 그리드 레이아웃 */}
+        <div className="search-layout-grid">
+          {/* 왼쪽 사이드바 (필터) */}
+          <aside className="search-sidebar">
+            <FilterSidebar />
+          </aside>
+
+          {/* 오른쪽 메인 콘텐츠 (호텔 리스트) */}
+          <main className="search-content">
+            {/* 정렬 버튼 등 */}
+            <div
+              className="list-header"
+              style={{
+                marginBottom: "2rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <h2 style={{ fontSize: "2rem" }}>
+                Showing {searchResults.length} places
+              </h2>
+              <select
+                style={{
+                  padding: "0.8rem",
+                  borderRadius: "0.5rem",
+                  border: "1px solid #ccc",
+                }}
+              >
+                <option>Recommended</option>
+                <option>Price Low to High</option>
+              </select>
+            </div>
+
+            <div className="results-list">
+              {searchResults.map((hotel) => (
+                <HotelCard key={hotel.id} hotel={hotel} />
+              ))}
+            </div>
+
+            {/* ✅ [추가] Show more results 버튼 */}
+            <button className="btn-show-more">Show more results</button>
+          </main>
         </div>
       </div>
     </div>
   );
-};
-
-/* ✅ [스타일] 버튼 스타일 객체 (SCSS 파일 없이 인라인으로 빠르게 적용) */
-const btnStyle = {
-  width: "3.2rem",
-  height: "3.2rem",
-  borderRadius: "0.8rem",
-  border: "none",
-  backgroundColor: "#8DD3BB",
-  color: "#112211",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  cursor: "pointer",
 };
 
 export default SearchPage;

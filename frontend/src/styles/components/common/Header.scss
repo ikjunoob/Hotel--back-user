@@ -7,9 +7,9 @@
   left: 0;
   width: 100%;
   z-index: 100;
-  background-color: #fff;
+  background-color:#4a6d6100;
   padding: 0.5rem 0;
-  box-shadow: 0 2px 30px rgba(0, 0, 0, 0.297);
+  box-shadow: 0 2px 30px rgba(0, 0, 0, 0.493);
 
   .inner {
     max-width: 2000px;
@@ -153,9 +153,9 @@
       기존 공통 스타일
      ========================================= */
   .header-left .logo {
-    font-size: 2.4rem;
+    font-size: 2.5rem;
     font-weight: 800;
-    color: #112211;
+    color:#8DD3BB;
     display: flex;
     align-items: center;
     gap: 0.8rem;
