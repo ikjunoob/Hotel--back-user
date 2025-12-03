@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../../common/variables" as *;
 @use "../../common/mixins" as *;
 
@@ -132,7 +133,7 @@
         .mailbox-front { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background-color: #3E5446; border-radius: 17rem 17rem 0 0; z-index: 2; border-bottom: 3px solid #1C2B23; }
         .mailbox-flag {
           position: absolute; top: 50%; right: -6rem; transform: translateY(-50%); width: 14rem; height: 5rem; background-color: #FF9E9E; z-index: 3; border-radius: 0 0.5rem 0.5rem 0;
-          &::before { content: ''; position: absolute; left: 0; top: 0; width: 1.5rem; height: 100%; background-color: darken(#FF9E9E, 15%); border-radius: 0.2rem 0 0 0.2rem; }
+          &::before { content: ''; position: absolute; left: 0; top: 0; width: 1.5rem; height: 100%; background-color: color.adjust(#FF9E9E, $lightness: -15%); border-radius: 0.2rem 0 0 0.2rem; }
         }
       }
       .mailbox-post { width: 8rem; height: 10rem; background-color: #C19A83; margin: -1rem auto 0; position: relative; z-index: 0; }
