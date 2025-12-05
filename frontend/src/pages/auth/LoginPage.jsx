@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { faFacebook, faGoogle, faApple } from "@fortawesome/free-brands-svg-icons";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useAuth } from "../../context/AuthContext";
 import "../../styles/pages/auth/AuthPages.scss";
 
@@ -88,14 +88,14 @@ const LoginPage = () => {
               </div>
 
               <div className="social-buttons">
-                <button type="button" className="social-btn facebook">
-                  <FontAwesomeIcon icon={faFacebook} />
+                <button type="button" className="social-btn naver" aria-label="Login with Naver">
+                  N
                 </button>
-                <button type="button" className="social-btn google">
+                <button type="button" className="social-btn google" aria-label="Login with Google">
                   <FontAwesomeIcon icon={faGoogle} />
                 </button>
-                <button type="button" className="social-btn apple">
-                  <FontAwesomeIcon icon={faApple} />
+                <button type="button" className="social-btn kakao" aria-label="Login with Kakao">
+                  K
                 </button>
               </div>
             </form>
