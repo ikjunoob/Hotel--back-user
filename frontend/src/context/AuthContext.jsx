@@ -9,8 +9,34 @@ export const AuthProvider = ({ children }) => {
 
   const isAuthed = !!user;
 
+  // 테스트용 계정 데이터
+  const MOCK_USERS = [
+    {
+      id: 1,
+      email: "test@hotel.com",
+      password: "test1234",
+      name: "홍길동",
+      phone: "010-1234-5678",
+      profileImage: "/images/default-avatar.jpg"
+    }
+  ];
+
   const login = async (email, password) => {
     try {
+      // 백엔드가 없는 경우 테스트 계정으로 로그인
+      const mockUser = MOCK_USERS.find(
+        u => u.email === email && u.password === password
+      );
+
+      if (mockUser) {
+        // 비밀번호 제외하고 저장
+        const { password: _, ...userData } = mockUser;
+        localStorage.setItem("accessToken", "mock-token-12345");
+        setUser(userData);
+        return true;
+      }
+
+      // 실제 API 호출 (백엔드 연동 시 사용)
       const response = await authApi.login({ email, password });
 
       const token = response?.accessToken || response?.token;
@@ -52,6 +78,16 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem("accessToken");
 
       if (token) {
+        // 테스트 토큰인 경우
+        if (token === "mock-token-12345") {
+          const mockUser = MOCK_USERS[0];
+          const { password: _, ...userData } = mockUser;
+          setUser(userData);
+          setLoading(false);
+          return;
+        }
+
+        // 실제 토큰인 경우
         try {
           const userData = await authApi.getMe();
           setUser(userData);

@@ -12,6 +12,7 @@ import SearchPage from "./pages/search/SearchPage";
 import HotelListPage from "./pages/search/HotelListPage";
 import HotelDetailPage from "./pages/hotel/HotelDetailPage";
 import WishlistPage from "./pages/mypage/WishlistPage"; // ✅ WishlistPage 임포트 확인
+import FlightSearchPage from "./pages/flight/FlightSearchPage"; // ✅ Flight 임포트
 
 import BookingStepLayout from "./pages/booking/BookingStepLayout";
 import BookingStepDates from "./pages/booking/BookingStepDates";
@@ -23,6 +24,9 @@ import BookingComplete from "./pages/booking/BookingComplete";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
+import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
+import VerifyPasswordResetPage from "./pages/auth/VerifyPasswordResetPage";
+import ResetPasswordConfirmPage from "./pages/auth/ResetPasswordConfirmPage";
 import KakaoCallbackPage from "./pages/auth/KakaoCallbackPage";
 import GoogleCallbackPage from "./pages/auth/GoogleCallbackPage";
 
@@ -62,6 +66,9 @@ const AppRouter = () => {
 
           {/* ✅ [수정] 찜하기 페이지를 여기(로그인 불필요 구역)로 이동 */}
           <Route path="wishlist" element={<WishlistPage />} />
+
+          {/* ✅ [추가] Flight 페이지 */}
+          <Route path="flights" element={<FlightSearchPage />} />
 
           {/* 고객센터 */}
           <Route path="support">
@@ -118,6 +125,9 @@ const AppRouter = () => {
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="verify-password-reset" element={<VerifyPasswordResetPage />} />
+          <Route path="reset-password-confirm" element={<ResetPasswordConfirmPage />} />
           <Route path="add-payment" element={<AddPaymentPage />} />
 
           <Route path="oauth">

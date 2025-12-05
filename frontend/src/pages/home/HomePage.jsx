@@ -1,9 +1,7 @@
-import React, { useState, useRef } from "react"; /* ✅ useRef 추가 */
+import React, { useState, useRef } from "react";
 import Header from "../../components/common/Header";
 import HeroSection from "../../components/home/HeroSection";
 import PopularDestinations from "../../components/home/PopularDestinations";
-import TravelMore from "../../components/home/TravelMore";
-import Newsletter from "../../components/common/Newsletter";
 import "../../styles/pages/home/HomePage.scss";
 
 const HomePage = () => {
@@ -27,7 +25,6 @@ const HomePage = () => {
 
   return (
     <div className="home-page top-container">
-      {/* Header에 마우스 이벤트 함수 전달 */}
       <Header 
         onMouseEnter={handleMouseEnter} 
         onMouseLeave={handleMouseLeave} 
@@ -35,14 +32,11 @@ const HomePage = () => {
 
       <HeroSection 
         isCardVisible={isCardVisible}
-        /* HeroSection(카드)에도 마우스 이벤트 함수 전달 */
         onCardEnter={handleMouseEnter}
         onCardLeave={handleMouseLeave}
       />
       
       <PopularDestinations />
-      <TravelMore />
-      {/* Newsletter는 Footer 내부에 있으므로 여기선 제외 */}
     </div>
   );
 };

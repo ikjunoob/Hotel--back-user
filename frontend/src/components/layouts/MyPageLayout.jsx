@@ -1,9 +1,12 @@
 import React from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import '../../styles/layouts/MyPageLayout.scss';
 
 const MyPageLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const menuItems = [
     { name: '대시보드', path: '/mypage' },
@@ -20,6 +23,12 @@ const MyPageLayout = () => {
     <div className="mypage-layout container">
       <div className="inner">
         <aside className="mypage-sidebar">
+          <div className="sidebar-header">
+            <button className="btn-back" onClick={() => navigate('/')}>
+              <FontAwesomeIcon icon={faHome} />
+              <span>홈으로</span>
+            </button>
+          </div>
           <h2 className="sidebar-title">마이페이지</h2>
           <nav>
             <ul>

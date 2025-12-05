@@ -4,33 +4,32 @@
 @use "../../common/mixins" as *;
 
 .search-page {
-    padding: 2rem 0 8rem;
     min-height: 100vh;
     background-color: #FAFAFA;
-
-    /* 헤더 높이만큼 여백 확보 (헤더가 absolute인 경우) */
     padding-top: 10rem;
+    padding-bottom: 4rem;
 
     /* 1. 검색창 영역 */
     .search-bar-wrapper {
-        background: transparent;
-        box-shadow: none;
-        padding: 0;
-        margin-bottom: 4rem;
-
+        position: sticky;
+        top: 6.4rem;
+        z-index: 100;
+        background: #FAFAFA;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
         display: flex;
         justify-content: center;
 
         /* 검색창 박스 스타일 */
         .search-container {
             width: 100%;
-            max-width: 1680px;
+            max-width: 1600px;
             background: #fff;
-            border-radius: 2rem;
-            padding: 3rem 4rem;
-            box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.08);
+            border-radius: 1.2rem;
+            padding: 2rem 3rem;
+            box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.08);
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             align-items: flex-end;
 
             @include respond-md {
@@ -45,20 +44,26 @@
 
                 label {
                     display: block;
-                    font-size: 1.4rem;
-                    font-weight: 700;
+                    font-size: 1.2rem;
+                    font-weight: 600;
                     color: #112211;
-                    margin-bottom: 0.8rem;
+                    margin-bottom: 0.6rem;
                 }
 
                 .input-field {
                     display: flex;
                     align-items: center;
-                    gap: 1rem;
-                    padding: 1.2rem;
-                    border: 1px solid #ccc;
-                    border-radius: 0.8rem;
+                    gap: 0.8rem;
+                    padding: 1rem;
+                    border: 1px solid #ddd;
+                    border-radius: 0.6rem;
                     background: #fff;
+                    transition: all 0.3s ease;
+
+                    &:focus-within {
+                        border-color: #8DD3BB;
+                        box-shadow: 0 0 0 3px rgba(141, 211, 187, 0.1);
+                    }
 
                     &.pointer {
                         cursor: pointer;
@@ -207,21 +212,21 @@
 
     /* 2. 메인 컨테이너 및 그리드 레이아웃 */
     .container {
-        max-width: 1700px; /* 너비 확장 */
+        max-width: 1600px;
         margin: 0 auto;
         padding: 0 2rem;
 
         /* 좌우 배치를 위한 그리드 설정 */
         .search-layout-grid {
             display: grid;
-            grid-template-columns: 32rem 1fr;
-            gap: 6rem; /* 좌우 간격 */
+            grid-template-columns: 28rem 1fr;
+            gap: 3rem;
             align-items: start;
 
             // 반응형: 화면 줄어들면 한 줄로 표시
             @include respond-md {
                 grid-template-columns: 1fr;
-                gap: 3rem;
+                gap: 2rem;
             }
         }
     }
@@ -230,22 +235,48 @@
 /* =========================================
    ✅ 필터 사이드바 스타일
    ========================================= */
+.search-sidebar {
+    position: sticky;
+    top: 18rem;
+    max-height: calc(100vh - 20rem);
+    overflow-y: auto;
+    
+    /* 스크롤바 스타일 */
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: #8DD3BB;
+        border-radius: 10px;
+        
+        &:hover {
+            background: #7BC4AC;
+        }
+    }
+}
+
 .filter-sidebar {
     background: #fff;
-    border-radius: 1.2rem;
-    padding: 2.4rem;
-    box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.05);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.05);
 
     .filter-title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 700;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
 
     .divider {
         height: 1px;
         background: #EAEAEA;
-        margin: 2rem 0;
+        margin: 1.5rem 0;
     }
 
     .filter-section {
@@ -345,14 +376,215 @@
     .results-list {
         display: flex;
         flex-direction: column;
-        gap: 3rem;
+        gap: 2rem;
+    }
+
+    /* 호텔 리스트 */
+    .hotel-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    /* 호텔 카드 아이템 */
+    .hotel-card-list-item {
+        display: grid;
+        grid-template-columns: 26rem 1fr;
+        gap: 2rem;
+        background: #fff;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+
+        &:hover {
+            box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        @include respond-md {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        /* 이미지 컨테이너 */
+        .hotel-image-container {
+            position: relative;
+            border-radius: 0.8rem;
+            overflow: hidden;
+            height: 20rem;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .btn-wishlist {
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+                width: 4.4rem;
+                height: 4.4rem;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.9);
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s;
+
+                svg {
+                    font-size: 2rem;
+                    color: #ccc;
+                    transition: color 0.3s;
+                }
+
+                &:hover {
+                    background: #fff;
+                    transform: scale(1.1);
+                }
+
+                &.active {
+                    svg {
+                        color: #FF6B9D;
+                    }
+                }
+            }
+        }
+
+        /* 호텔 정보 */
+        .hotel-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .hotel-header {
+                display: flex;
+                justify-content: space-between;
+                gap: 2rem;
+                margin-bottom: 1.5rem;
+
+                h3 {
+                    font-size: 2rem;
+                    font-weight: 700;
+                    color: #112211;
+                    margin-bottom: 0.5rem;
+                }
+
+                .location {
+                    font-size: 1.4rem;
+                    color: #666;
+                    margin-bottom: 1rem;
+                }
+
+                .price-section {
+                    text-align: right;
+                    white-space: nowrap;
+
+                    .rating {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        margin-bottom: 0.5rem;
+
+                        .rating-badge {
+                            background: #8DD3BB;
+                            color: #112211;
+                            padding: 0.5rem 1rem;
+                            border-radius: 0.6rem;
+                            font-weight: 700;
+                            font-size: 1.4rem;
+                        }
+
+                        .rating-text {
+                            font-size: 1.4rem;
+                            font-weight: 600;
+                            color: #112211;
+                        }
+                    }
+
+                    .reviews {
+                        font-size: 1.3rem;
+                        color: #999;
+                    }
+                }
+            }
+
+            .amenities {
+                font-size: 1.4rem;
+                color: #666;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+
+            /* 옵션 태그 */
+            .options-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.8rem;
+                margin-bottom: 1.5rem;
+
+                .option-tag {
+                    display: inline-block;
+                    padding: 0.5rem 1rem;
+                    background: #f5f5f5;
+                    border-radius: 2rem;
+                    font-size: 1.3rem;
+                    color: #666;
+                }
+            }
+
+            /* 푸터 (가격 + 버튼) */
+            .hotel-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 2rem;
+                border-top: 1px solid #eee;
+                padding-top: 1.5rem;
+
+                .price-info {
+                    .original-price {
+                        font-size: 1.3rem;
+                        color: #999;
+                        text-decoration: line-through;
+                        margin-bottom: 0.3rem;
+                    }
+
+                    .current-price {
+                        font-size: 2rem;
+                        font-weight: 700;
+                        color: #FF6B9D;
+                    }
+                }
+
+                .btn-view-details {
+                    padding: 1rem 2.5rem;
+                    background: #8DD3BB;
+                    color: #112211;
+                    border: none;
+                    border-radius: 0.8rem;
+                    font-size: 1.4rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background 0.2s;
+
+                    &:hover {
+                        background: color.adjust(#8DD3BB, $lightness: -10%);
+                    }
+                }
+            }
+        }
     }
 
     /* ✅ [추가] Show more results 버튼 스타일 */
     .btn-show-more {
         width: 100%;
         padding: 1.5rem;
-        margin-top: 1rem; /* 리스트와의 간격 */
+        margin-top: 2rem;
         background-color: #112211; /* 검은색 배경 */
         color: #fff; /* 흰색 글씨 */
         border: none;
