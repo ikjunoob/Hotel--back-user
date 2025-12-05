@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,12 +16,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../styles/pages/search/HotelListPage.scss";
 import FilterSidebar from "./FilterSidebar";
+import { useWishlist } from "../../context/WishlistContext";
 
 const HotelListPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { toggleWishlist, isWishlisted } = useWishlist();
 
-  /* 초기값 설정 */
   const initialDest = searchParams.get("destination") || "";
   const initialCheckIn = searchParams.get("checkIn")
     ? new Date(searchParams.get("checkIn"))
@@ -38,9 +39,7 @@ const HotelListPage = () => {
   const [rooms, setRooms] = useState(initialRooms);
   const [guests, setGuests] = useState(initialGuests);
   const [showGuestPopup, setShowGuestPopup] = useState(false);
-  const [wishlist, setWishlist] = useState({});
 
-  /* 카운터 핸들러 */
   const handleCounter = (type, operation) => {
     if (type === "rooms") {
       if (operation === "inc") setRooms((prev) => prev + 1);
@@ -51,19 +50,10 @@ const HotelListPage = () => {
     }
   };
 
-  /* 찜하기 토글 */
-  const toggleWishlist = (hotelId) => {
-    setWishlist((prev) => ({
-      ...prev,
-      [hotelId]: !prev[hotelId],
-    }));
-  };
-
-  /* 더미 데이터 (호텔 리스트) */
   const hotels = [
     {
       id: 1,
-      name: "제주도힐",
+      name: "Jeju Resort",
       location: "Jeju Island, Korea",
       rating: 4.8,
       reviews: 156,
@@ -71,11 +61,11 @@ const HotelListPage = () => {
       originalPrice: 290,
       image: "/images/hotel1.jpg",
       amenities: "5 Star Hotel",
-      options: "Near park • Near nightlife • Near theater • Clean Hotel",
+      options: "Near park · Near nightlife · Near theater · Clean Hotel",
     },
     {
       id: 2,
-      name: "라해스 델라우 숙소",
+      name: "Bali Seaside Villa",
       location: "Bali, Indonesia",
       rating: 4.9,
       reviews: 98,
@@ -83,11 +73,11 @@ const HotelListPage = () => {
       originalPrice: 220,
       image: "/images/hotel2.jpg",
       amenities: "Luxury Resort",
-      options: "Pool • Beach • Spa • Restaurant",
+      options: "Pool · Beach · Spa · Restaurant",
     },
     {
       id: 3,
-      name: "카카오 먹 숙소",
+      name: "Bangkok Riverside Hotel",
       location: "Bangkok, Thailand",
       rating: 4.7,
       reviews: 145,
@@ -95,11 +85,11 @@ const HotelListPage = () => {
       originalPrice: 165,
       image: "/images/hotel3.jpg",
       amenities: "4 Star Hotel",
-      options: "Near market • Good food • Nice view",
+      options: "Near market · Good food · Nice view",
     },
     {
       id: 4,
-      name: "베이오 숙소",
+      name: "Phuket Bay Resort",
       location: "Phuket, Thailand",
       rating: 4.6,
       reviews: 203,
@@ -107,16 +97,14 @@ const HotelListPage = () => {
       originalPrice: 250,
       image: "/images/hotel1.jpg",
       amenities: "Boutique Hotel",
-      options: "Beach • Pool • Cafe • WiFi",
+      options: "Beach · Pool · Cafe · WiFi",
     },
   ];
 
   return (
     <div className="search-page">
-      {/* 1. 상단 검색바 영역 */}
       <div className="search-bar-wrapper">
         <div className="search-container">
-          {/* Destination */}
           <div className="input-group">
             <label>Enter Destination</label>
             <div className="input-field">
@@ -130,7 +118,6 @@ const HotelListPage = () => {
             </div>
           </div>
 
-          {/* Check In */}
           <div className="input-group">
             <label>Check In</label>
             <div className="input-field">
@@ -144,7 +131,6 @@ const HotelListPage = () => {
             </div>
           </div>
 
-          {/* Check Out */}
           <div className="input-group">
             <label>Check Out</label>
             <div className="input-field">
@@ -159,7 +145,6 @@ const HotelListPage = () => {
             </div>
           </div>
 
-          {/* Rooms & Guests */}
           <div className="input-group" style={{ position: "relative" }}>
             <label>Rooms & Guests</label>
             <div
@@ -190,7 +175,6 @@ const HotelListPage = () => {
               />
             </div>
 
-            {/* 인원수 팝업 */}
             {showGuestPopup && (
               <div className="guest-popup">
                 <div className="counter-row">
@@ -228,24 +212,19 @@ const HotelListPage = () => {
             )}
           </div>
 
-          {/* 검색 버튼 */}
           <button className="btn-search">
             <FontAwesomeIcon icon={faSearch} />
           </button>
         </div>
       </div>
 
-      {/* 2. 메인 컨텐츠 영역 (좌우 분할) */}
       <div className="container">
         <div className="search-layout-grid">
-          {/* 왼쪽 사이드바 (필터) */}
           <aside className="search-sidebar">
             <FilterSidebar />
           </aside>
 
-          {/* 오른쪽 메인 콘텐츠 (호텔 리스트) */}
           <main className="search-content">
-            {/* 정렬 및 결과 개수 */}
             <div
               className="list-header"
               style={{
@@ -273,7 +252,6 @@ const HotelListPage = () => {
               </select>
             </div>
 
-            {/* 호텔 카드 리스트 */}
             <div className="hotel-list">
               {hotels.map((hotel) => (
                 <div key={hotel.id} className="hotel-card-list-item">
@@ -281,9 +259,9 @@ const HotelListPage = () => {
                     <img src={hotel.image} alt={hotel.name} />
                     <button
                       className={`btn-wishlist ${
-                        wishlist[hotel.id] ? "active" : ""
+                        isWishlisted(hotel.id) ? "active" : ""
                       }`}
-                      onClick={() => toggleWishlist(hotel.id)}
+                      onClick={() => toggleWishlist(hotel)}
                     >
                       <FontAwesomeIcon icon={faHeart} />
                     </button>
@@ -307,17 +285,22 @@ const HotelListPage = () => {
                     <p className="amenities">{hotel.amenities}</p>
 
                     <div className="options-grid">
-                      <span className="option-tag">Near park</span>
-                      <span className="option-tag">Near nightlife</span>
-                      <span className="option-tag">Near theater</span>
-                      <span className="option-tag">Clean Hotel</span>
+                      {hotel.options.split("·").map((option, idx) => (
+                        <span key={idx} className="option-tag">
+                          {option.trim()}
+                        </span>
+                      ))}
                     </div>
 
                     <div className="hotel-footer">
                       <div className="price-info">
-                        <p className="original-price">₩{hotel.originalPrice.toLocaleString()}</p>
+                        <p className="original-price">
+                          {hotel.originalPrice
+                            ? `$${hotel.originalPrice.toLocaleString()}`
+                            : ""}
+                        </p>
                         <p className="current-price">
-                          ₩{hotel.price.toLocaleString()}/night
+                          ${hotel.price?.toLocaleString?.() ?? hotel.price}/night
                         </p>
                       </div>
                       <button
@@ -332,7 +315,6 @@ const HotelListPage = () => {
               ))}
             </div>
 
-            {/* Show more results 버튼 */}
             <button className="btn-show-more">Show more results</button>
           </main>
         </div>
